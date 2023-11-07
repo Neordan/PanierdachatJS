@@ -15,9 +15,15 @@ document.addEventListener("DOMContentLoaded", function() {
             total += parseFloat(item.textContent);
         });
         document.getElementById('totalLines').textContent = total + '€';
+        calculTotalWithDelivery()
     }
 
     function calculTotalWithDelivery() {
+        let totalArticles = parseFloat(document.getElementById('totalLines').textContent);
+        let selectedDelivery = document.getElementById('delivery').value;
+        let deliveryPrice = (selectedDelivery === 'relais') ? 5 : 10;
 
+        document.getElementById('totalDelivery').textContent = deliveryPrice + '€';
+        document.getElementById('totalWithDelivery').textContent = (totalArticles + deliveryPrice) + '€';
     }
 })
