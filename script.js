@@ -16,4 +16,8 @@ document.addEventListener("DOMContentLoaded", function() {
         });
         document.getElementById('totalLines').textContent = total + '€';
     }
+
+    function calculTotalWithDelivery() {
+
+    }
 })
