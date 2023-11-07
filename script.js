@@ -3,14 +3,28 @@ document.addEventListener("DOMContentLoaded", function() {
     
     function calculTotalLine(productLine) {
         let price = parseFloat(productLine.querySelector('.price').textContent);
-        let quantity = parseInt(productLine.querySelector('.quantity').value);
+        let quantity = productLine.querySelector('.quantity').value;
 
         let total = (price * quantity);
         productLine.querySelector('.totalLine').textContent = total + '€';
-        calculTotalArticles();
+        calculTotalProducts();
     }
 
-    function calculTotalArticles() {
+    
+    let tableLine = document.querySelectorAll('tbody tr');
+    // boucle pour changer les prix des lignes en fonction des quantités choisies
+    tableLine.forEach(function(tableLine) {
+        let quantitySelect = tableLine.querySelector('.quantity');
+        
+        quantitySelect.addEventListener("change", function() {
+            calculTotalLine(tableLine);
+        });
+
+        // Pour avoir le total pour un seul article à la base
+        calculTotalLine(tableLine);
+    });
+
+    function calculTotalProducts() {
         let total = 0;
         let totalLines = document.querySelectorAll('.totalLine');
         // boucle pour récupérer les prix des lignes
@@ -18,27 +32,36 @@ document.addEventListener("DOMContentLoaded", function() {
             total += parseFloat(item.textContent);
         });
         document.getElementById('totalLines').textContent = total + '€';
-        calculTotalWithDelivery()
+        calculTotalDelivery()
     }
-
-    function calculTotalWithDelivery() {
-        let totalArticles = parseFloat(document.getElementById('totalLines').textContent);
+    
+    function calculTotalDelivery() {
+        let totalPrice = parseFloat(document.getElementById('totalLines').textContent);
         let selectedDelivery = document.getElementById('delivery').value;
         let deliveryPrice = (selectedDelivery === 'relais') ? 5 : 10;
-
+    
         document.getElementById('totalDelivery').textContent = deliveryPrice + '€';
-        document.getElementById('totalWithDelivery').textContent = (totalArticles + deliveryPrice) + '€';
+        document.getElementById('totalWithDelivery').textContent = (totalPrice + deliveryPrice) + '€';
     }
 
-    let tableLine = document.querySelectorAll('tbody tr');
-    // boucle pour changer les prix des lignes en fonction des quantités choisies
-    tableLine.forEach(function(tableLine) {
-        let quantitySelect = tableLine.querySelector('.quantity');
+    // Evenement pour changer la livraison
+    document.getElementById('delivery').addEventListener("change", function() {
+        calculTotalDelivery();
+    });  
+})
 
-        quantitySelect.addEventListener("change", function() {
-            calculTotalLine(tableLine);
-        });
 
-        calculTotalLine(tableLine);
+
+// Validation du formulaire
+document.addEventListener("DOMContentLoaded", function() {
+    const form = document.getElementById('deliveryForm');
+
+    form.addEventListener('submit', function(event) {
+        // Pas de rechargement 
+        event.preventDefault();
+        if (validateForm()) {
+            console.log('Formulaire valide.');
+        }
     });
+
 })
