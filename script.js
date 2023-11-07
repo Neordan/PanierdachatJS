@@ -1,6 +1,5 @@
 document.addEventListener("DOMContentLoaded", function() {
     
-    
     function calculTotalLine(productLine) {
         let price = parseFloat(productLine.querySelector('.price').textContent);
         let quantity = productLine.querySelector('.quantity').value;
@@ -22,6 +21,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
         // Pour avoir le total pour un seul article à la base
         calculTotalLine(tableLine);
+        console.log(tableLine)
     });
 
     function calculTotalProducts() {
@@ -50,8 +50,6 @@ document.addEventListener("DOMContentLoaded", function() {
     });  
 })
 
-
-
 // Validation du formulaire
 document.addEventListener("DOMContentLoaded", function() {
     const form = document.getElementById('deliveryForm');
@@ -63,5 +61,23 @@ document.addEventListener("DOMContentLoaded", function() {
             console.log('Formulaire valide.');
         }
     });
+
+    function validateForm() {
+        const nom = document.getElementById('nom').value;
+        const prenom = document.getElementById('prenom').value;
+        const rue = document.getElementById('rue').value;
+        const codePostal = document.getElementById('codePostal').value;
+        const ville = document.getElementById('ville').value;
+        const email = document.getElementById('email').value;
+        const telephone = document.getElementById('telephone').value;
+
+        // Vérifie les champs requis 
+        if (nom.trim() === '' || prenom.trim() === '' || rue.trim() === '' || codePostal.trim() === '' || ville.trim() === '' || (email.trim() === '' && telephone.trim() === '')) {
+            alert('Veuillez remplir tous les champs obligatoires.');
+            return false;
+        }
+
+        return true;
+    }
 
 })
