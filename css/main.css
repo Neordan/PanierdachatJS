@@ -1,0 +1,101 @@
+/* Réinitialisation des marges et des rembourrages pour tous les éléments */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    line-height: 1.6;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 20px;
+}
+
+h1 {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+#cart {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+}
+
+#cart th, #cart td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: center;
+}
+
+#cart th:nth-child(4),
+#cart td:nth-child(4),
+#cart td:nth-child(6) {
+    font-weight: bold;
+}
+
+#cart th:nth-child(5),
+#cart td:nth-child(5) {
+    text-align: center;
+}
+
+.remove_product {
+    background-color: #ff5252;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
+}
+
+.remove_product:hover {
+    background-color: #e00000;
+}
+
+tbody input {
+    width: 50px;
+    text-align: center;
+    border: none;
+    background: none;
+}
+
+#deliveryForm {
+    margin-top: 20px;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+#deliveryForm div {
+    flex: 0 0 50%;
+    margin-bottom: 10px;
+}
+
+#deliveryForm label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+#deliveryForm input,
+#deliveryForm select {
+    width: 100%;
+    padding: 8px;
+    border-radius: 4px;
+    border: 1px solid #ddd;
+    margin-top: 5px;
+}
+
+#deliveryForm button[type="submit"] {
+    background-color: #4285f4;
+    color: white;
+    border: none;
+    padding: 20px 30px;
+    cursor: pointer;
+    margin: 20px;
+    border-radius: 10px;
+}
+
+#deliveryForm button[type="submit"]:hover {
+    background-color: #3366cc;
+}
