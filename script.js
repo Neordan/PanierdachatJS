@@ -34,14 +34,17 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
 
-    function calculTotalProducts() {
+    /**
+  * Calcul le total du panier
+  */
+    function calculTotalCart() {
+        let dom_total_prices = document.querySelectorAll('.cart_product .total_price')
         let total = 0;
-        let totalLines = document.querySelectorAll('.totalLine');
-        // boucle pour récupérer les prix des lignes
-        totalLines.forEach(function (item) {
-            total += parseFloat(item.textContent);
+        dom_total_prices.forEach(function (dom_total_price) {
+            total += parseFloat(dom_total_price.dataset.totalPrice);
         });
-        document.getElementById('totalLines').textContent = total + '€';
+
+        document.querySelector('#cart .total_cart').textContent = total + "€";
         calculTotalDelivery()
     }
 
