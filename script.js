@@ -48,6 +48,18 @@ document.addEventListener("DOMContentLoaded", function () {
         calculTotalDelivery()
     }
 
+    /**
+ * Supprime une ligne de produit de la commande
+ */
+function deleteProduct(tr_cart_product) {
+    tr_cart_product.querySelector('.remove_product').addEventListener('click', function () {
+        tr_cart_product.remove();
+        console.log(tr_cart_product.querySelector('.remove_product'))
+        calculTotalCart();
+    });
+}
+
+
 
     let tableLine = document.querySelectorAll('tbody tr');
     // boucle pour changer les prix des lignes en fonction des quantités choisies
