@@ -1,100 +1,90 @@
 <!DOCTYPE html>
 <html lang="fr">
+
 <head>
     <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mon Panier</title>
-    <script src="./script.js" defer></script>
+    <script src="./js/main.js" defer></script>
+    <link rel="stylesheet" href="./css/main.css">
+    <title>Cart</title>
 </head>
+
 <body>
-    <h2>Mon panier</h2>
-    <table>
-        <thead>
-            <tr>
-                <th>Produit</th>
-                <th>Prix</th>
-                <th>Quantité</th>
-                <th>Total</th>
-                <th></th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td>Bague</td>
-                <td class="price">80</td>
-                <td>
-                    <select class="quantity">
-                        <option value="0">0</option>
-                        <option selected="yes" value="1">1</option>
-                        <option value="2">2</option>
-                        <option value="3">3</option>
-                        <option value="4">4</option>
-                        <option value="5">5</option>
-                    </select>
-                </td>
-                <td class="totalLine"></td>
-                <td>
-                    <button class="delete">Supprimer</button>
-                </td>
-            </tr>
-            <tr>
-                <td>Montre</td>
-                <td class="price">50</td>
-                <td>
-                    <select class="quantity">
-                        <option value="0">0</option>
-                        <option selected="yes" value="1">1</option>
-                        <option value="2">2</option>
-                        <option value="3">3</option>
-                        <option value="4">4</option>
-                        <option value="5">5</option>
-                    </select>
-                </td>
-                <td class="totalLine"></td>
-                <td>
-                    <button class="delete">Supprimer</button>
-                </td>
-            </tr>
-            <tr>
-                <td>Bracelet</td>
-                <td class="price">10</td>
-                <td>
-                    <select class="quantity">
-                        <option value="0">0</option>
-                        <option selected="yes" value="1">1</option>
-                        <option value="2">2</option>
-                        <option value="3">3</option>
-                        <option value="4">4</option>
-                        <option value="5">5</option>
-                    </select>
-                </td>
-                <td class="totalLine"></td>
-                <td>
-                    <button class="delete">Supprimer</button>
-                </td>
-            </tr>
-        </tbody>
-        <tfoot>
-            <tr>
-                <td colspan="3">Total articles</td>
-                <td id="totalLines"></td>
-            </tr>
-            <tr>
-                <td colspan="3">
-                    <label for="delivery">Choix de livraison:</label>
-                    <select id="delivery">
-                        <option value="relais">Relais</option>
-                        <option value="domicile">Domicile</option>
-                    </select>
-                </td>
-                <td id="totalDelivery"></td>
-            </tr>
-            <tr>
-                <td colspan="3">Total avec livraison</td>
-                <td id="totalWithDelivery"></td>
-            </tr>
-        </tfoot>
-    </table>
+    <div>
+        <h1>Panier</h1>
+        <table id="cart">
+            <thead>
+                <tr>
+                    <th>Nom</th>
+                    <th>Prix U</th>
+                    <th>Quantité</th>
+                    <th>Total HT</th>
+                    <th>#</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr class="cart_product">
+                    <td>Produit A</td>
+                    <td class="unit_price" data-unit-price="10">
+                        <span class="value">10</span> €
+                    </td>
+                    <td class="quantity">
+                        <input type="number" class="influent-price-on-change" value="1" />
+                    </td>
+                    <td class="total_price" data-total-price="10"></td>
+                    <td>
+                        <select class="influent-price-on-change">
+                            <option>1</option>
+                            <option>2</option>
+                        </select>
+                    </td>
+                    <td>
+                        <button class="remove_product">X</button>
+                    </td>
+                </tr>
+                <tr class="cart_product">
+                    <td>Produit B</td>
+                    <td class="unit_price" data-unit-price="20">
+                        <span class="value">20</span> €
+                    </td>
+                    <td class="quantity">
+                        <input type="number" class="influent-price-on-change" value="1" />
+                    </td>
+                    <td class="total_price" data-total-price="20"></td>
+                    <td>
+                        <select class="influent-price-on-change">
+                            <option>1</option>
+                            <option>2</option>
+                        </select>
+                    </td>
+                    <td>
+                        <button class="remove_product">X</button>
+                    </td>
+                </tr>
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td colspan="2">Total</td>
+                    <td colspan="2" class="total_cart"></td>
+                </tr>
+                <tr>
+                    <td colspan="3">
+                        <label for="delivery">Choix de livraison:</label>
+                        <select id="delivery">
+                            <option value="relais">Relais</option>
+                            <option value="domicile">Domicile</option>
+                        </select>
+                    </td>
+                    <td id="totalDelivery"></td>
+                </tr>
+                <tr>
+                    <td colspan="3">Total avec livraison</td>
+                    <td id="totalWithDelivery"></td>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
     <h3>Adresse de livraison et coordonnées</h3>
     <form id="deliveryForm">
         <div>
@@ -111,7 +101,7 @@
         </div>
         <div>
             <label for="codePostal">Code Postal:</label>
-            <input type="text" id="codePostal" required>
+            <input type="number" id="codePostal" required>
         </div>
         <div>
             <label for="ville">Ville:</label>
@@ -128,4 +118,5 @@
         <button type="submit">Valider</button>
     </form>
 </body>
+
 </html>
