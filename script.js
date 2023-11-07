@@ -9,6 +9,11 @@ document.addEventListener("DOMContentLoaded", function() {
     }
 
     function calculTotalArticles() {
-        
+        let total = 0;
+        let totalLines = document.querySelectorAll('.totalLine');
+        totalLines.forEach(function(item) {
+            total += parseFloat(item.textContent);
+        });
+        document.getElementById('totalLines').textContent = total + '€';
     }
 })
