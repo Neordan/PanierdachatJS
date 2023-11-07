@@ -5,20 +5,33 @@ document.addEventListener("DOMContentLoaded", function () {
  * @param {Element} tr_cart_product
  * @returns {number}
  */
-function calculTotalProduct(tr_cart_product) {
-    let quantity = tr_cart_product.querySelector('.quantity input').value;
-    let unit_price = parseFloat(tr_cart_product.querySelector('.unit_price').dataset.unitPrice);
-    if (quantity < 0) {
-        quantity = 0;
-        tr_cart_product.querySelector('.quantity input').value = quantity;
+    function calculTotalProduct(tr_cart_product) {
+        let quantity = tr_cart_product.querySelector('.quantity input').value;
+        let unit_price = parseFloat(tr_cart_product.querySelector('.unit_price').dataset.unitPrice);
+        if (quantity < 0) {
+            quantity = 0;
+            tr_cart_product.querySelector('.quantity input').value = quantity;
+        }
+        let total = quantity * unit_price;
+
+        tr_cart_product.querySelector('.total_price').textContent = total + '€';
+        tr_cart_product.querySelector('.total_price').dataset.totalPrice = total;
+
+        return total;
     }
-    let total = quantity * unit_price;
 
-    tr_cart_product.querySelector('.total_price').textContent = total + '€';
-    tr_cart_product.querySelector('.total_price').dataset.totalPrice = total;
-
-    return total;
-}
+    /**
+     * 
+     * Calcule le prix en fonction de la quantité choisie 
+     */
+    function changePriceLineProduct(tr_cart_product) {
+        tr_cart_product.querySelectorAll('.influent-price-on-change').forEach((element) => {
+            element.addEventListener('change', function (event) {
+                calculTotalProduct(tr_cart_product);
+                calculTotalCart();
+            })
+        })
+    }
 
 
     function calculTotalProducts() {
