@@ -75,56 +75,53 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     }
 
-    let tableLine = document.querySelectorAll('tbody tr');
-    // boucle pour changer les prix des lignes en fonction des quantités choisies
-    tableLine.forEach(function (tableLine) {
-        tableLine.querySelectorAll('.influent-price_on_change').forEach((element) => {
-            element.addEventListener('change', function (event) {
-                calculTotalLine(tableLine)
-                calculTotalProducts();
+    /**
+   * Initialise le code
+   */
+    function init() {
+        let tr_cart_products = document.querySelectorAll('.cart_product');
+        tr_cart_products.forEach(function (tr_cart_product) {
 
-            })
+            calculTotalProduct(tr_cart_product);
+
+            changePriceLineProduct(tr_cart_product);
+
+            deleteProduct(tr_cart_product);
         })
+        // Evenement pour changer la livraison
+        document.getElementById('delivery').addEventListener("change", calculTotalDelivery)
 
-        // Evenement pour supprimer une ligne
-        document.querySelectorAll('.delete').forEach(function (deletebtn) {
-            deletebtn.addEventListener("click", function () {
-                deletebtn.closest('tr').remove();
-                calculTotalProducts();
-            });
-        });
-
-    })
-});
-
-// Validation du formulaire
-document.addEventListener("DOMContentLoaded", function () {
-    const form = document.getElementById('deliveryForm');
-
-    form.addEventListener('submit', function (event) {
-        // Pas de rechargement 
-        event.preventDefault();
-        if (validateForm()) {
-            console.log('Formulaire valide.');
-        }
-    });
-
-    function validateForm() {
-        const nom = document.getElementById('nom').value;
-        const prenom = document.getElementById('prenom').value;
-        const rue = document.getElementById('rue').value;
-        const codePostal = document.getElementById('codePostal').value;
-        const ville = document.getElementById('ville').value;
-        const email = document.getElementById('email').value;
-        const telephone = document.getElementById('telephone').value;
-
-        // Vérifie les champs requis 
-        if (nom.trim() === '' || prenom.trim() === '' || rue.trim() === '' || codePostal.trim() === '' || ville.trim() === '' || (email.trim() === '' && telephone.trim() === '')) {
-            alert('Veuillez remplir tous les champs obligatoires.');
-            return false;
-        }
-
-        return true;
+        calculTotalCart();
     }
 
-})
+    init();
+
+    // Validation du formulaire
+    document.addEventListener("DOMContentLoaded", function () {
+        const form = document.getElementById('deliveryForm');
+
+        form.addEventListener('submit', function (event) {
+            if (validateForm()) {
+                console.log('Formulaire valide.');
+            }
+        });
+
+        function validateForm() {
+            const nom = document.getElementById('nom').value;
+            const prenom = document.getElementById('prenom').value;
+            const rue = document.getElementById('rue').value;
+            const codePostal = document.getElementById('codePostal').value;
+            const ville = document.getElementById('ville').value;
+            const email = document.getElementById('email').value;
+            const telephone = document.getElementById('telephone').value;
+
+            // Vérifie les champs requis 
+            if (nom.trim() === '' || prenom.trim() === '' || rue.trim() === '' || codePostal.trim() === '' || ville.trim() === '' || (email.trim() === '' && telephone.trim() === '')) {
+                alert('Veuillez remplir tous les champs obligatoires.');
+                return false;
+            }
+
+            return true;
+        }
+
+    })
