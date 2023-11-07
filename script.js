@@ -51,15 +51,29 @@ document.addEventListener("DOMContentLoaded", function () {
     /**
  * Supprime une ligne de produit de la commande
  */
-function deleteProduct(tr_cart_product) {
-    tr_cart_product.querySelector('.remove_product').addEventListener('click', function () {
-        tr_cart_product.remove();
-        console.log(tr_cart_product.querySelector('.remove_product'))
-        calculTotalCart();
-    });
-}
+    function deleteProduct(tr_cart_product) {
+        tr_cart_product.querySelector('.remove_product').addEventListener('click', function () {
+            tr_cart_product.remove();
+            console.log(tr_cart_product.querySelector('.remove_product'))
+            calculTotalCart();
+        });
+    }
 
-
+    /**
+     * Calcule des frais de livraison
+     */
+    function calculTotalDelivery() {
+        let totalPrice = parseFloat(document.querySelector('.total_cart').textContent);
+        let selectedDelivery = document.getElementById('delivery').value;
+        let deliveryPrice = (selectedDelivery === 'relais') ? 5 : 10;
+        if (totalPrice > 0) {
+            document.getElementById('totalDelivery').textContent = deliveryPrice + ' €';
+            document.getElementById('totalWithDelivery').textContent = (totalPrice + deliveryPrice) + ' €';
+        } else {
+            document.getElementById('totalDelivery').textContent = '0 €';
+            document.getElementById('totalWithDelivery').textContent = '0 €';
+        }
+    }
 
     let tableLine = document.querySelectorAll('tbody tr');
     // boucle pour changer les prix des lignes en fonction des quantités choisies
@@ -80,19 +94,6 @@ function deleteProduct(tr_cart_product) {
             });
         });
 
-        function calculTotalDelivery() {
-            let totalPrice = parseFloat(document.getElementById('totalLines').textContent);
-            let selectedDelivery = document.getElementById('delivery').value;
-            let deliveryPrice = (selectedDelivery === 'relais') ? 5 : 10;
-
-            document.getElementById('totalDelivery').textContent = deliveryPrice + '€';
-            document.getElementById('totalWithDelivery').textContent = (totalPrice + deliveryPrice) + '€';
-        }
-
-        // Evenement pour changer la livraison
-        document.getElementById('delivery').addEventListener("change", function () {
-            calculTotalDelivery();
-        });
     })
 });
 
