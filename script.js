@@ -1,127 +1,124 @@
-document.addEventListener("DOMContentLoaded", function () {
-
-    /**
+/**
  * Calcul le total d'une ligne dans le tableau
  * @param {Element} tr_cart_product
  * @returns {number}
  */
-    function calculTotalProduct(tr_cart_product) {
-        let quantity = tr_cart_product.querySelector('.quantity input').value;
-        let unit_price = parseFloat(tr_cart_product.querySelector('.unit_price').dataset.unitPrice);
-        if (quantity < 0) {
-            quantity = 0;
-            tr_cart_product.querySelector('.quantity input').value = quantity;
-        }
-        let total = quantity * unit_price;
-
-        tr_cart_product.querySelector('.total_price').textContent = total + '€';
-        tr_cart_product.querySelector('.total_price').dataset.totalPrice = total;
-
-        return total;
+function calculTotalProduct(tr_cart_product) {
+    let quantity = tr_cart_product.querySelector('.quantity input').value;
+    let unit_price = parseFloat(tr_cart_product.querySelector('.unit_price').dataset.unitPrice);
+    if (quantity < 0) {
+        quantity = 0;
+        tr_cart_product.querySelector('.quantity input').value = quantity;
     }
+    let total = quantity * unit_price;
 
-    /**
-     * 
-     * Calcule le prix en fonction de la quantité choisie 
-     */
-    function changePriceLineProduct(tr_cart_product) {
-        tr_cart_product.querySelectorAll('.influent-price-on-change').forEach((element) => {
-            element.addEventListener('change', function (event) {
-                calculTotalProduct(tr_cart_product);
-                calculTotalCart();
-            })
+    tr_cart_product.querySelector('.total_price').textContent = total + '€';
+    tr_cart_product.querySelector('.total_price').dataset.totalPrice = total;
+
+    return total;
+}
+
+/**
+ * 
+ * Calcule le prix en fonction de la quantité choisie 
+ */
+function changePriceLineProduct(tr_cart_product) {
+    tr_cart_product.querySelectorAll('.influent-price-on-change').forEach((element) => {
+        element.addEventListener('change', function (event) {
+            calculTotalProduct(tr_cart_product);
+            calculTotalCart();
         })
-    }
+    })
+}
 
+/**
+ * Calcul le total du panier
+ */
+function calculTotalCart() {
+    let dom_total_prices = document.querySelectorAll('.cart_product .total_price')
+    let total = 0;
+    dom_total_prices.forEach(function (dom_total_price) {
+        total += parseFloat(dom_total_price.dataset.totalPrice);
+    });
 
-    /**
-  * Calcul le total du panier
-  */
-    function calculTotalCart() {
-        let dom_total_prices = document.querySelectorAll('.cart_product .total_price')
-        let total = 0;
-        dom_total_prices.forEach(function (dom_total_price) {
-            total += parseFloat(dom_total_price.dataset.totalPrice);
-        });
+    document.querySelector('#cart .total_cart').textContent = total + "€";
+    calculTotalDelivery()
+}
 
-        document.querySelector('#cart .total_cart').textContent = total + "€";
-        calculTotalDelivery()
-    }
-
-    /**
+/**
  * Supprime une ligne de produit de la commande
  */
-    function deleteProduct(tr_cart_product) {
-        tr_cart_product.querySelector('.remove_product').addEventListener('click', function () {
-            tr_cart_product.remove();
-            console.log(tr_cart_product.querySelector('.remove_product'))
-            calculTotalCart();
-        });
-    }
-
-    /**
-     * Calcule des frais de livraison
-     */
-    function calculTotalDelivery() {
-        let totalPrice = parseFloat(document.querySelector('.total_cart').textContent);
-        let selectedDelivery = document.getElementById('delivery').value;
-        let deliveryPrice = (selectedDelivery === 'relais') ? 5 : 10;
-        if (totalPrice > 0) {
-            document.getElementById('totalDelivery').textContent = deliveryPrice + ' €';
-            document.getElementById('totalWithDelivery').textContent = (totalPrice + deliveryPrice) + ' €';
-        } else {
-            document.getElementById('totalDelivery').textContent = '0 €';
-            document.getElementById('totalWithDelivery').textContent = '0 €';
-        }
-    }
-
-    /**
-   * Initialise le code
-   */
-    function init() {
-        let tr_cart_products = document.querySelectorAll('.cart_product');
-        tr_cart_products.forEach(function (tr_cart_product) {
-
-            calculTotalProduct(tr_cart_product);
-
-            changePriceLineProduct(tr_cart_product);
-
-            deleteProduct(tr_cart_product);
-        })
-        // Evenement pour changer la livraison
-        document.getElementById('delivery').addEventListener("change", calculTotalDelivery)
-
+function deleteProduct(tr_cart_product) {
+    tr_cart_product.querySelector('.remove_product').addEventListener('click', function () {
+        tr_cart_product.remove();
+        console.log(tr_cart_product.querySelector('.remove_product'))
         calculTotalCart();
-    }
+    });
+}
 
-    init();
+/**
+ * Calcule des frais de livraison
+ */
+function calculTotalDelivery() {
+    let totalPrice = parseFloat(document.querySelector('.total_cart').textContent);
+    let selectedDelivery = document.getElementById('delivery').value;
+    let deliveryPrice = (selectedDelivery === 'relais') ? 5 : 10;
+    if(totalPrice > 0 ) {
+        document.getElementById('totalDelivery').textContent = deliveryPrice + ' €';
+        document.getElementById('totalWithDelivery').textContent = (totalPrice + deliveryPrice) + ' €';  
+    } else {
+        document.getElementById('totalDelivery').textContent = '0 €';
+        document.getElementById('totalWithDelivery').textContent = '0 €';
+    } 
+}
 
-    // Validation du formulaire
-    document.addEventListener("DOMContentLoaded", function () {
-        const form = document.getElementById('deliveryForm');
+/**
+ * Initialise le code
+ */
+function init() {
+    let tr_cart_products = document.querySelectorAll('.cart_product');
+    tr_cart_products.forEach(function (tr_cart_product) {
 
-        form.addEventListener('submit', function (event) {
-            if (validateForm()) {
-                console.log('Formulaire valide.');
-            }
-        });
+        calculTotalProduct(tr_cart_product);
 
-        function validateForm() {
-            const nom = document.getElementById('nom').value;
-            const prenom = document.getElementById('prenom').value;
-            const rue = document.getElementById('rue').value;
-            const codePostal = document.getElementById('codePostal').value;
-            const ville = document.getElementById('ville').value;
-            const email = document.getElementById('email').value;
-            const telephone = document.getElementById('telephone').value;
+        changePriceLineProduct(tr_cart_product);
+        
+        deleteProduct(tr_cart_product);
+    })
+    // Evenement pour changer la livraison
+    document.getElementById('delivery').addEventListener("change", calculTotalDelivery) 
 
-            // Vérifie les champs requis 
-            if (nom.trim() === '' || prenom.trim() === '' || rue.trim() === '' || codePostal.trim() === '' || ville.trim() === '' || (email.trim() === '' && telephone.trim() === '')) {
-                alert('Veuillez remplir tous les champs obligatoires.');
-                return false;
-            }
+    calculTotalCart();
+}
 
-            return true;
+init();
+
+
+// Validation du formulaire de livraison
+document.addEventListener("DOMContentLoaded", function () {
+    const form = document.getElementById('deliveryForm');
+
+    form.addEventListener('submit', function (event) {
+        if (validateForm()) {
+            alert('Formulaire valide.');
+        }
+    });
+
+    function validateForm() {
+        const nom = document.getElementById('nom').value;
+        const prenom = document.getElementById('prenom').value;
+        const rue = document.getElementById('rue').value;
+        const codePostal = document.getElementById('codePostal').value;
+        const ville = document.getElementById('ville').value;
+        const email = document.getElementById('email').value;
+        const telephone = document.getElementById('telephone').value;
+
+        // Vérification des champs obligatoires
+        if (nom.trim() === '' || prenom.trim() === '' || rue.trim() === '' || codePostal.trim() === '' || ville.trim() === '' || (email.trim() === '' && telephone.trim() === '')) {
+            alert('Veuillez remplir tous les champs obligatoires.');
+            return false;
         }
 
-    })
+        return true;
+    }
+})
