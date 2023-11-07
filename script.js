@@ -7,4 +7,8 @@ document.addEventListener("DOMContentLoaded", function() {
         productLine.querySelector('.totalLine').textContent = total + '€';
         calculTotalArticles();
     }
+
+    function calculTotalArticles() {
+        
+    }
 })
