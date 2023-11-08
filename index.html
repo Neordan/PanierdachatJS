@@ -24,59 +24,21 @@
                 </tr>
             </thead>
             <tbody>
-                <tr class="cart_product">
-                    <td>Produit A</td>
-                    <td class="unit_price" data-unit-price="10">
-                        <span class="value">10</span> €
-                    </td>
-                    <td class="quantity">
-                        <input type="number" class="influent-price-on-change" value="1" />
-                    </td>
-                    <td class="total_price" data-total-price="10"></td>
-                    <td>
-                        <select class="influent-price-on-change">
-                            <option>1</option>
-                            <option>2</option>
-                        </select>
-                    </td>
-                    <td>
-                        <button class="remove_product">X</button>
-                    </td>
-                </tr>
-                <tr class="cart_product">
-                    <td>Produit B</td>
-                    <td class="unit_price" data-unit-price="20">
-                        <span class="value">20</span> €
-                    </td>
-                    <td class="quantity">
-                        <input type="number" class="influent-price-on-change" value="1" />
-                    </td>
-                    <td class="total_price" data-total-price="20"></td>
-                    <td>
-                        <select class="influent-price-on-change">
-                            <option>1</option>
-                            <option>2</option>
-                        </select>
-                    </td>
-                    <td>
-                        <button class="remove_product">X</button>
-                    </td>
-                </tr>
             </tbody>
             <tfoot>
                 <tr>
-                    <td colspan="2">Total</td>
+                    <td colspan="2">Sous-total</td>
                     <td colspan="2" class="total_cart"></td>
                 </tr>
                 <tr>
                     <td colspan="3">
-                        <label for="delivery">Choix de livraison:</label>
-                        <select id="delivery">
+                        <label for="delivery_choice">Choix de livraison:</label>
+                        <select id="delivery_choice">
                             <option value="relais">Relais</option>
                             <option value="domicile">Domicile</option>
                         </select>
                     </td>
-                    <td id="totalDelivery"></td>
+                    <td id="deliveryPrice"></td>
                 </tr>
                 <tr>
                     <td colspan="3">Total avec livraison</td>
@@ -88,35 +50,37 @@
     <h3>Adresse de livraison et coordonnées</h3>
     <form id="deliveryForm">
         <div>
-            <label for="nom">Nom:</label>
-            <input type="text" id="nom" required>
+            <label for="surname">Nom:</label>
+            <input type="text" id="surname" required>
         </div>
         <div>
-            <label for="prenom">Prénom:</label>
-            <input type="text" id="prenom"required>
+            <label for="firstname">Prénom:</label>
+            <input type="text" id="firstname"required>
         </div>
         <div>
-            <label for="rue">Rue:</label>
-            <input type="text" id="rue" required>
+            <label for="street">Rue:</label>
+            <input type="text" id="street" required>
         </div>
         <div>
-            <label for="codePostal">Code Postal:</label>
-            <input type="number" id="codePostal" required>
+            <label for="postalCode">Code Postal:</label>
+            <input type="number" id="postalCode" required>
         </div>
         <div>
-            <label for="ville">Ville:</label>
-            <input type="text" id="ville" required>
+            <label for="city">Ville:</label>
+            <input type="text" id="city" required>
         </div>
         <div>
             <label for="email">Email:</label>
             <input type="email" id="email">
         </div>
         <div>
-            <label for="telephone">Téléphone:</label>
-            <input type="tel" id="telephone">
+            <label for="phone">Téléphone:</label>
+            <input type="tel" id="phone">
         </div>
         <button type="submit">Valider</button>
     </form>
+
+    <button class="afficher">afficher</button>
 </body>
 
 </html>
