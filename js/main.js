@@ -1,100 +1,24 @@
 document.addEventListener("DOMContentLoaded", function () {
 
-    async function productsDisplay() {
-        let reponse = await fetch("./products.json");
-        let products = await reponse.json();
-        let tbody = document.querySelector("tbody");
+    // Modifier la quantité des produits en direct
+    function calculTotalLine(tr_cart_product) {
+        let quantity = parseInt(tr_cart_product.querySelector('.quantity input').value);
         
-        // Affichage des produits
-        for (let product of products) {
-            createLineProducts(product, tbody);
+        if (quantity <= 0) {
+            tr_cart_product.remove();
+        } else {
+            let unit_price = parseFloat(tr_cart_product.querySelector('.unit_price').getAttribute('data-unit-price'));
+            let total = quantity * unit_price;
+            tr_cart_product.querySelector('.total_price').textContent = total + '€';
+            calculTotalLines();
         }
     }
 
-    function createLineProducts(item, DOM_location) {
-        let lineProduct = document.createElement("tr");
-        lineProduct.classList.add("cart_product");
-        lineProduct.innerHTML = `
-            <td>${item.name}</td>
-            <td class="unit_price" data-unit-price="${item.price}">
-                <span class="value">${item.price}</span> €
-            </td>
-            <td class="quantity">
-                <input type="number" class="influent-price-on-change" value="1" />
-            </td>
-            <td class="total_price" data-total-price="${item.price}"></td>
-            <td>
-                <select class="influent-price-on-change">
-                    <option>1</option>
-                    <option>2</option>
-                </select>
-            </td>
-            <td>
-                <button class="remove_product">X</button>
-            </td>
-        `;
-        DOM_location.appendChild(lineProduct);
-    }
-
-
-    /**
-     * Calcul le total d'une ligne dans le tableau
-     * @param {Element} tr_cart_product
-     * @returns {number}
-     */
-    function calculTotalProduct(tr_cart_product) {
-        let quantity = tr_cart_product.querySelector('.quantity input').value;
-        let unit_price = parseFloat(tr_cart_product.querySelector('.unit_price').dataset.unitPrice);
-
-        quantity = (quantity < 0) ? 0 : quantity;
-        tr_cart_product.querySelector('.quantity input').value = quantity;
-
-        let total = quantity * unit_price;
-
-        tr_cart_product.querySelector('.total_price').textContent = total + '€';
-        tr_cart_product.querySelector('.total_price').dataset.totalPrice = total;
-
-        console.log("Quantity:", quantity);
-        console.log("Unit Price:", unit_price);
-
-        return total;
-    }
-
-    /**
-     * 
-     * Calcule le prix en fonction de la quantité choisie 
-     */
-    function changePriceLineProduct(tr_cart_product) {
-        tr_cart_product.querySelectorAll('.influent-price-on-change').forEach((element) => {
-            element.addEventListener('change', function (event) {
-                calculTotalProduct(tr_cart_product);
-                calculTotalCart();
-            })
-        })
-    }
-
-    /**
-     * Calcul le total du panier
-     */
-    function calculTotalCart() {
-        let dom_total_prices = document.querySelectorAll('.cart_product .total_price')
-        let total = 0;
-        dom_total_prices.forEach(function (dom_total_price) {
-            total += parseFloat(dom_total_price.dataset.totalPrice);
-        });
-
-        document.querySelector('#cart .total_cart').textContent = total + "€";
-        calculTotalDelivery()
-    }
-
-    /**
-     * Supprime une ligne de produit de la commande
-     */
+    // Supprimer un produit du panier
     function deleteProduct(tr_cart_product) {
-        tr_cart_product.querySelector('.remove_product').addEventListener('click', function () {
+        tr_cart_product.querySelector('.remove').addEventListener('click', function () {
             tr_cart_product.remove();
-            console.log(tr_cart_product.querySelector('.remove_product'))
-            calculTotalCart();
+            calculTotalLines();
         });
     }
 
@@ -102,65 +26,83 @@ document.addEventListener("DOMContentLoaded", function () {
      * Calcule des frais de livraison
      */
     function calculTotalDelivery() {
-        let totalPrice = parseFloat(document.querySelector('.total_cart').textContent);
-        let selectedModeDelivery = document.getElementById('delivery_choice').value;
-        let deliveryPrice = (selectedModeDelivery === 'relais') ? 5 : 10;
-        if (totalPrice > 0) {
-            document.getElementById('deliveryPrice').textContent = deliveryPrice + ' €';
-            document.getElementById('totalWithDelivery').textContent = (totalPrice + deliveryPrice) + ' €';
-        } else {
-            document.getElementById('deliveryPrice').textContent = '0 €';
-            document.getElementById('totalWithDelivery').textContent = '0 €';
-        }
-        // Evenement pour changer la livraison
-        document.getElementById('delivery_choice').addEventListener("change", calculTotalDelivery)
+        let deliveryChoice = document.getElementById('delivery_choice').value || relais; 
+        let deliveryPrice = deliveryChoice === 'relais' ? 5 : 12;
+        document.getElementById('deliveryPrice').textContent = deliveryPrice + '€';
+        calculTotalLines();
     }
+    
+    calculTotalDelivery();
+    
+    // Gérer les changements de livraison
+    document.getElementById('delivery_choice').addEventListener('change', calculTotalDelivery);
 
-    /**
-     * Initialise le code
-     */
-    function init() {
-        productsDisplay();
-        let tr_cart_products = document.querySelectorAll('.cart_product');
-        tr_cart_products.forEach(function (tr_cart_product) {
-            
-            calculTotalProduct(tr_cart_product);
 
-            changePriceLineProduct(tr_cart_product);
-
-            deleteProduct(tr_cart_product);
-        })
-        calculTotalCart();
-    }
-
-    init()
-
-    // Validation du formulaire de livraison
-    document.addEventListener("DOMContentLoaded", function () {
-        const form = document.getElementById('deliveryForm');
-
-        form.addEventListener('submit', function (event) {
-            if (validateForm()) {
-                alert('Formulaire valide.');
-            }
+    // Calculer dynamiquement le total du panier
+    function calculTotalLines() {
+        let total = 0;
+        document.querySelectorAll('.cart_product .total_price').forEach(function (item) {
+            total += parseFloat(item.textContent);
         });
+        let deliveryPrice = parseFloat(document.getElementById('deliveryPrice').textContent);
+        document.getElementById('totalWithDelivery').textContent = (total + deliveryPrice) + '€';
+        document.querySelector('.total_cart').textContent = total + '€';
+    }
 
-        function validateForm() {
-            const nom = document.getElementById('nom').value;
-            const prenom = document.getElementById('prenom').value;
-            const rue = document.getElementById('rue').value;
-            const codePostal = document.getElementById('codePostal').value;
-            const ville = document.getElementById('ville').value;
-            const email = document.getElementById('email').value;
-            const telephone = document.getElementById('telephone').value;
-
-            // Vérification des champs obligatoires
-            if (nom.trim() === '' || prenom.trim() === '' || rue.trim() === '' || codePostal.trim() === '' || ville.trim() === '' || (email.trim() === '' && telephone.trim() === '')) {
-                alert('Veuillez remplir tous les champs obligatoires.');
-                return false;
-            }
-
-            return true;
+    async function displayProducts() {
+        try {
+            const response = await fetch('products.json');
+            const products = await response.json();
+            const tbody = document.querySelector('tbody');
+    
+            products.forEach(product => {
+                createLineProduct(product, tbody);
+            });
+    
+            // Appel pour calculer les totaux dès le chargement de la page
+            calculTotalLines();
+        } catch (error) {
+            console.error('Une erreur s\'est produite lors du chargement des produits.', error);
         }
-    })
-})
+    }
+
+    function createLineProduct(product, DOM_location) {
+        let lineProduct = document.createElement('tr');
+        lineProduct.classList.add('cart_product');
+        lineProduct.innerHTML += 
+        `
+            <td>${product.name}</td>
+            <td class="unit_price" data-unit-price="${product.price}">
+                <span class="value">${product.price}</span> €
+            </td>
+            <td class="quantity">
+                <input type="number" class="influent-price-on-change" value="1"/>
+            </td>
+            <td class="total_price" data-total-price="${product.price}"></td>
+            <td></td>
+            <td>
+                <button class="remove">X</button>
+            </td>
+        `
+        ;
+
+        DOM_location.appendChild(lineProduct);
+
+        let quantityInput = lineProduct.querySelector('.quantity input');
+        let removeButton = lineProduct.querySelector('.remove');
+    
+        quantityInput.addEventListener('input', () => {
+            calculTotalLine(lineProduct);
+        });
+    
+        removeButton.addEventListener('click', () => {
+            deleteProduct(lineProduct);
+        });
+    
+        // Calculer le total initial pour chaque ligne
+        calculTotalLine(lineProduct);
+    }
+
+    displayProducts();
+});
+
